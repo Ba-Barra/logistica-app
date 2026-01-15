@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Truck, User, MapPin, Building2, Plus, CheckCircle, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Truck, User, MapPin, Building2, Plus, CheckCircle } from 'lucide-react';
 import api from '../services/api';
+import RouteMap from '../components/RouteMap'; // <--- Importamos el mapa
 
 // Interfaces de datos
 interface Delivery {
@@ -69,7 +70,7 @@ export default function RouteDetailsPage() {
     }
   };
 
-  // Función para completar entrega (NUEVA)
+  // Función para completar entrega
   const handleCompleteDelivery = async (deliveryId: number) => {
     if (!confirm('¿Confirmar que la entrega se realizó con éxito?')) return;
     
@@ -77,7 +78,7 @@ export default function RouteDetailsPage() {
       await api.patch(`/routes/deliveries/${deliveryId}`, {
         status: 'DELIVERED'
       });
-      fetchData(); // Recargar la pantalla para ver el cambio
+      fetchData(); 
     } catch (error) {
       alert('No se pudo actualizar la entrega');
     }
@@ -87,7 +88,8 @@ export default function RouteDetailsPage() {
   if (!route) return <div className="text-center py-20 text-red-500">Ruta no encontrada</div>;
 
   return (
-    <div className="pb-20">
+    <div className="pb-20"> {/* <--- INICIO DEL CONTENEDOR PRINCIPAL */}
+       
        {/* Botón Volver */}
        <div className="mb-6">
          <Link to="/routes" className="text-gray-500 hover:text-gray-800 flex items-center gap-2 font-medium">
@@ -113,10 +115,6 @@ export default function RouteDetailsPage() {
                </span>
              </p>
            </div>
-           
-           <button className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-900 transition flex items-center gap-2">
-              <MapPin size={18} /> Ver Mapa
-           </button>
          </div>
        </div>
 
@@ -145,7 +143,7 @@ export default function RouteDetailsPage() {
          </div>
        </div>
 
-       {/* SECCIÓN NUEVA: Entregas */}
+       {/* SECCIÓN: Entregas */}
        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
            <h2 className="font-bold text-gray-700 flex items-center gap-2 text-lg">
@@ -157,7 +155,6 @@ export default function RouteDetailsPage() {
          </div>
 
          <div className="p-6">
-           {/* Formulario para Agregar Entrega */}
            <div className="flex gap-3 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
              <select 
                className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none"
@@ -178,7 +175,6 @@ export default function RouteDetailsPage() {
              </button>
            </div>
 
-           {/* Lista de Entregas */}
            {route.deliveries.length === 0 ? (
              <div className="text-center py-10 text-gray-400 border-2 border-dashed rounded-lg">
                <MapPin className="mx-auto h-12 w-12 mb-2 opacity-50" />
@@ -204,7 +200,6 @@ export default function RouteDetailsPage() {
                      </p>
                    </div>
 
-                   {/* Columna Derecha: Botón de Acción (ACTUALIZADO) */}
                    <div className="text-right">
                      {delivery.status === 'PENDING' ? (
                        <button 
@@ -226,6 +221,15 @@ export default function RouteDetailsPage() {
            )}
          </div>
        </div>
-    </div>
+
+       {/* SECCIÓN NUEVA: MAPA (Ahora sí está dentro del div principal) */}
+       <div className="mt-8">
+         <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <MapPin className="text-red-500" /> Visualización Geográfica
+         </h2>
+         <RouteMap deliveries={route.deliveries} />
+       </div>
+
+    </div> // <--- FIN DEL CONTENEDOR PRINCIPAL
   );
 }

@@ -46,8 +46,9 @@ model Client {
   id          Int        @id @default(autoincrement())
   companyName String
   address     String
-  latitude    Float?
-  longitude   Float?
+  phone       String     // <--- AGREGA ESTA LÍNEA QUE FALTABA
+  latitude    Float      @default(-33.4489)
+  longitude   Float      @default(-70.6693)
   deliveries  Delivery[]
 }
 
