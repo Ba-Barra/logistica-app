@@ -6,6 +6,7 @@ import driverRoutes from './routes/driverRoutes';
 import clientRoutes from './routes/clientRoutes'; 
 import routeRoutes from './routes/routeRoutes';
 import dashboardRoutes from './routes/dashboardRoutes';
+import authRoutes from './routes/authRoutes';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(cors()); // Permite conexiones externas (como desde tu Frontend)
 app.use(express.json()); // Permite recibir datos en formato JSON
 
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/routes', routeRoutes);
