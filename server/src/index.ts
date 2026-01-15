@@ -5,6 +5,7 @@ import vehicleRoutes from './routes/vehicleRoutes';
 import driverRoutes from './routes/driverRoutes';
 import clientRoutes from './routes/clientRoutes'; 
 import routeRoutes from './routes/routeRoutes';
+import dashboardRoutes from './routes/dashboardRoutes';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -21,6 +22,7 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/routes', routeRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Ruta de prueba (Health Check)
 app.get('/api/health', (req, res) => {
